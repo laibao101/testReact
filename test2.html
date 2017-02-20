@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+    <script type="text/javascript" src="bower_components/showdown/dist/showdown.js"></script>
+</head>
+<body>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+        var CommentList = React.createClass({
+          render:function() {
+            var commentNodes = this.props.data.map(function (comment) {
+              return (
+                <Comment author={comment.author}>
+                  {comment.text}
+                </Comment>
+              );
+            });
+            return (
+              <div className="commentList">
+              {commentNodes}
+              </div>
+            )
+          }
+        });
+
+
+        var converter = new showdown.Converter();
+        var data = [
+          {author: "Pete Hunt", text: "This is one comment"},
+          {author: "Jordan Walke", text: "This is *another* comment"}
+        ];
+        var Comment = React.createClass({
+          render:function() {
+             var rawMarkup = converter.makeHtml(this.props.children.toString());
+            return (
+              <div className="comment">
+                <h2 className="commentAuthor">{this.props.author}</h2>
+                <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+              </div>
+            )
+          }
+        });
+
+
+        var CommentForm = React.createClass({
+          render:function() {
+            return (
+              <div className="commentForm">
+                Hello, I am a CommentForm
+              </div>
+            )
+          }
+        });
+
+
+
+        var CommentBox = React.createClass({
+          render:function() {
+            return (
+              <div className="commentBox">
+                <h1>Hi, I am a commentBox</h1>
+                <CommentList data={this.props.data}></CommentList>
+                <CommentForm></CommentForm>
+              </div>
+            );
+          }
+        });
+
+        ReactDOM.render(
+          <CommentBox data={data}></CommentBox>,
+          document.getElementById('root')
+        )
+    </script>
+</body>
+</html>
