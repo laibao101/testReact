@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-with-addons.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+</head>
+<body>
+    <div id="root">
+        
+    </div>
+    <script type="text/babel">
+        
+
+        class Test extends React.Component{
+            
+            constructor(props) {
+                super(props);
+                this.state={
+                    showOptions:false
+                }
+            }
+
+            render(){
+                let options;
+
+                if (this.state.showOptions) {
+                    options = (
+                        <ul>
+                            <li>中国</li>
+                            <li>美国</li>
+                        </ul>
+                    );
+                }
+                return (
+                  <div className="dropdown" onClick={this.handleClick.bind(this)}>
+                      <label htmlFor="">choose a country</label>
+                      {options}
+                  </div>
+                );
+            }
+
+            handleClick(){
+                this.setState({
+                    showOptions:!this.state.showOptions
+                })
+
+            }
+
+
+            
+        }
+
+        var Comment = React.createClass({
+            render:function () {
+                return (
+                    <div ref="maindiv">value is  {this.props.value}</div>
+                )
+            },
+            componentDidMount:function() {
+                var a = this.refs.maindiv;
+            }
+        });
+
+        var RichText = React.createClass({
+            render:function () {
+                var style = {
+                    width:'100px',
+                    height:'100px',
+                    border:'1px solid #ccc'
+                }
+                return <div ref="editableDiv" style={style} contentEditable="true" onKeyDown={this.handleKeyDown}></div>
+            },
+            handleKeyDown:function () {
+                var editor = this.refs.editableDiv;
+                var html = editor.innerHTML;
+                console.log(html)
+            }
+        });
+
+        var TodoLists = React.createClass({
+            handleClick:function (e) {
+                this.setState({
+                    text:'',
+                    todoList:this.state.todoList.concat(this.state.text)
+                })
+            },
+            handelChange:function (e) {
+                this.setState({
+                    text:e.target.value
+                })
+            },
+            getInitialState:function () {
+              return {
+                todoList:[],
+                text:''
+              }  
+            },
+            handelDel:function (e) {
+              var arr = this.state.todoList;
+              var index = arr.indexOf(e.target.innerHTML);
+
+              if (index!=-1) {
+                  arr.splice(index,1);
+              }
+              this.setState({
+                todoList:arr
+              })
+            },
+            render:function () {
+                var createItem = function (item) {
+                    return <li className="todo-item" onClick={this.handelDel}>{item}</li>
+                }
+                return (
+                    <div className="todo-list">
+                        <input type="text" className="todo-val"   value={this.state.text} onChange={this.handelChange}/>
+                        <button type="button" className="todo-btn" onClick={this.handleClick}>添加</button>
+                        <ul className="todo-wrap">
+                            {this.state.todoList.map(createItem.bind(this))}
+                        </ul>
+                    </div>
+                )
+            }
+        });
+
+
+
+        ReactDOM.render(
+          <TodoLists></TodoLists>,
+          document.getElementById('root')
+        );
+
+    </script>
+</body>
+</html>
