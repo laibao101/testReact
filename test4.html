@@ -7,6 +7,9 @@
     <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
     <script type="text/javascript" src="bower_components/babel/browser.js"></script>
     <script type="text/javascript" src="bower_components/showdown/dist/showdown.js"></script>
+    <script type="text/javascript" src="bower_components/jquery\dist\jquery.js">
+
+    </script>
 </head>
 <body>
     <div id="root">
@@ -60,20 +63,42 @@
         });
 
 
+
         var CommentBox = React.createClass({
+          getInitialState:function() {
+            return {
+              data:[]
+            }
+          },
           render:function() {
             return (
               <div className="commentBox">
                 <h1>Hi, I am a commentBox</h1>
-                <CommentList data={this.props.data}></CommentList>
+                <CommentList data={this.state.data}></CommentList>
                 <CommentForm></CommentForm>
               </div>
             );
+          },
+          loadCommentsFromServer:function () {
+            $.ajax({
+              url:this.props.url,
+              success:function(data) {
+                this.setState({data:data})
+              }.bind(this),
+              error:function(xhr,status,err) {
+                console.error(this.props.url,status, err.toString());
+              }.bind(this)
+            });
+          },
+          componentDidMount:function() {
+            this.loadCommentsFromServer();
+            // setInterval(this.loadCommentsFromServer,this.props.pollInterval);
           }
         });
 
+
         ReactDOM.render(
-          <CommentBox data={data}></CommentBox>,
+          <CommentBox url="comments.json" pollInterval="2000"></CommentBox>,
           document.getElementById('root')
         )
     </script>

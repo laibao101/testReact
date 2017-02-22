@@ -7,6 +7,9 @@
     <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
     <script type="text/javascript" src="bower_components/babel/browser.js"></script>
     <script type="text/javascript" src="bower_components/showdown/dist/showdown.js"></script>
+    <script type="text/javascript" src="bower_components/jquery\dist\jquery.js">
+
+    </script>
 </head>
 <body>
     <div id="root">
@@ -32,10 +35,7 @@
 
 
         var converter = new showdown.Converter();
-        var data = [
-          {author: "Pete Hunt", text: "This is one comment"},
-          {author: "Jordan Walke", text: "This is *another* comment"}
-        ];
+       
         var Comment = React.createClass({
           render:function() {
              var rawMarkup = converter.makeHtml(this.props.children.toString());
@@ -52,28 +52,70 @@
         var CommentForm = React.createClass({
           render:function() {
             return (
-              <div className="commentForm">
-                Hello, I am a CommentForm
-              </div>
+              <form className="commentForm" onSubmit={this.handelSubmit}>
+                <input type="text" placeholder="Your name" ref="author"/>
+                <input type="text" placeholder="Say something" ref="text"/>
+                <input type="submit" value="提交"/>
+              </form>
             )
+          },
+          handelSubmit:function (e) {
+            console.log(this)
+            e.preventDefault();
+            var author = this.refs.author.value.trim();
+            var text = this.refs.text.value.trim();
+            if (!text || !author) {
+              return ;
+            }
+            this.props.onCommentSubmit({author:author,text:text});
+            this.refs.author.value='';
+            this.refs.text.value='';
           }
         });
 
 
+
         var CommentBox = React.createClass({
+          getInitialState:function() {
+            return {
+              data:[]
+            }
+          },
+          handelCommentSubmit:function (comment) {
+            console.log(comment);
+            var comments = this.state.data.concat(comment);
+            this.setState({
+              data:comments
+            })
+          },
           render:function() {
             return (
               <div className="commentBox">
                 <h1>Hi, I am a commentBox</h1>
-                <CommentList data={this.props.data}></CommentList>
-                <CommentForm></CommentForm>
+                <CommentList data={this.state.data}></CommentList>
+                <CommentForm onCommentSubmit={this.handelCommentSubmit}></CommentForm>
               </div>
             );
+          },
+          loadCommentsFromServer:function () {
+            $.ajax({
+              url:this.props.url,
+              success:function(data) {
+                this.setState({data:data})
+              }.bind(this),
+              error:function(xhr,status,err) {
+                console.error(this.props.url,status, err.toString());
+              }.bind(this)
+            });
+          },
+          componentDidMount:function() {
+            this.loadCommentsFromServer();
           }
         });
 
+
         ReactDOM.render(
-          <CommentBox data={data}></CommentBox>,
+          <CommentBox url="comments.json" pollInterval="2000"></CommentBox>,
           document.getElementById('root')
         )
     </script>
