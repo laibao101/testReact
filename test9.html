@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var Avatar = React.createClass({
+            render:function () {
+                return (
+                    <div>
+                        <ProfilePic username={this.props.username}></ProfilePic>
+                        <ProfileLink username={this.props.username}></ProfileLink>
+                    </div>
+                );
+            }
+        });
+
+        var ProfilePic = React.createClass({
+            render:function () {
+                return (
+                    <img src={'http://graph.facebook.com/'+this.props.username+'/picture'} alt=""/>
+                );
+            }
+        });
+
+        var ProfileLink = React.createClass({
+            render:function () {
+                return (
+                    <a href={'http://www.facebook.com/' + this.props.username}>{this.props.username}</a>
+                );
+            }
+        });
+
+
+        ReactDOM.render(<Avatar username="222"></Avatar>,document.getElementById('root'))
+    </script>
+</body>
+</html>

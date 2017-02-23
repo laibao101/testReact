@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var LinkButton = React.createClass({
+            getInitialState:function(){
+                return {
+                    liked:false
+                };
+            },
+            handelClick:function (e) {
+                this.setState({
+                    liked:!this.state.liked
+                });
+            },
+            render:function () {
+                var text = this.state.liked ? 'like' : 'haven\'t liked';
+                return (
+                    <p onClick={this.handelClick}>You {text} this. Click to toggle</p>
+                )
+            }
+        });
+
+        ReactDOM.render(<LinkButton></LinkButton>,document.getElementById('root'))
+    </script>
+</body>
+</html>

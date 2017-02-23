@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var FancyCheckbox = React.createClass({
+            render:function () {
+                var fancyClass = this.props.checked ? 'FancyChecked' : 'FancyUnchecked';
+                return (
+                    <div className={fancyClass} onClick={this.props.onClick}>
+                        {this.props.children.map(function (child) {
+                            return <span key={child.props.id}>{child}</span>;
+                        })} 
+                    </div>
+                );
+            }
+        });
+
+        ReactDOM.render(
+            <FancyCheckbox checked="true" onClick={console.log.bind(console)}><span id="laowang">Hello world</span><span id="xiaowang">Hello world</span></FancyCheckbox>,
+            document.getElementById('root')
+        )
+    </script>
+</body> 
+</html>

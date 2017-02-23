@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var Component = React.createClass({
+            render:function(){
+                return <div>{['First ', <span>&middot;</span>, ' Second']}</div>
+            }
+        })
+
+        ReactDOM.render(<div dangerouslySetInnerHTML={{__html: 'First &middot; Second'}} />,document.getElementById('root'))
+    </script>
+</body>
+</html>

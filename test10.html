@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var ListItemWrapper = React.createClass({
+            render:function () {
+                return <li>{this.props.data.text}</li>;
+            }
+        });
+
+        var MyComponent = React.createClass({
+            propTypes:{
+                results:React.PropTypes.array
+            },
+            render:function () {
+                var options = this.props.results.map(function (result) {
+                            return <ListItemWrapper key={result.id} data={result}></ListItemWrapper>;
+                        });
+                return (
+                    <ul>
+                        {options}
+                    </ul>
+                );
+            }
+        });
+
+
+        var data = [
+            {id:1,text:'first'},
+            {id:2,text:'second'},
+            {id:3,text:'third'}
+        ];
+
+        ReactDOM.render(<MyComponent results={data}></MyComponent>,document.getElementById('root'))
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-with-addons.min.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+    <style>
+        .example-enter {
+          opacity: 0.01;
+          transition: opacity .5s ease-in;
+        }
+
+        .example-enter.example-enter-active {
+          opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var NoLink = React.createClass({
+          getInitialState: function() {
+            return {message: 'Hello!'};
+          },
+          handleChange: function(event) {
+            this.setState({message: event.target.value});
+          },
+          render: function() {
+            var message = this.state.message;
+            return <input type="text" value={message} onChange={this.handleChange} />;
+          }
+        });
+        console.log(React.addons)
+        var WithLink = React.createClass({
+          mixins: [React.addons.LinkedStateMixin],
+          getInitialState: function() {
+            return {message: 'Hello!'};
+          },
+          render: function() {
+            return (
+                <div >
+                    <input type="text"  valueLink={this.linkState('message')} />
+                    <button type="button" onClick={this.handelClick}>提交</button>
+                </div>
+            );
+          },
+          handelClick:function (e) {
+              console.log(this.state.message)
+          }
+        });
+
+        ReactDOM.render(
+            <WithLink></WithLink>,
+            document.getElementById('root')
+        )
+    </script>
+</body> 
+</html>

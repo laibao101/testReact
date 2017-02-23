@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var FancyCheckbox = React.createClass({
+            render:function () {
+                var {checked, title, ...other} = this.props;
+                var fancyClass = checked ? 'FancyChecked' : 'FancyUnchecked';
+                var fancyTitle = checked ? 'X' + title : '0 ' + title;
+                return (
+                    <label htmlFor="">
+                        <input type="checkbox"  {...other} checked={checked} className={fancyClass} />
+                        {fancyTitle}
+                    </label>
+                );
+            }
+        });
+
+        ReactDOM.render(
+            <FancyCheckbox checked={true} title={'laowang'} data-href="www.baidu.com"></FancyCheckbox>,
+            document.getElementById('root')
+        )
+    </script>
+</body> 
+</html>

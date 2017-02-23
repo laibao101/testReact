@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var MyComponent = React.createClass({
+            render:function () {
+                return (
+                    <div>
+                        <input type="text" ref="myTextInput"/>
+                        <input type="button" value="Focus the text input" onClick={this.handelClick}/>
+                    </div>
+                );
+            },
+            handelClick:function () {
+                this.refs.myTextInput.focus();
+            }
+        });
+
+        ReactDOM.render(
+            <MyComponent></MyComponent>,
+            document.getElementById('root')
+        )
+    </script>
+</body> 
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+        <script type="text/javascript" src="bower_components/react/react-with-addons.min.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+    <style>
+        .example-enter {
+          opacity: 0.01;
+          transition: opacity .5s ease-in;
+        }
+
+        .example-enter.example-enter-active {
+          opacity: 1;
+        }
+
+        .example-leave {
+          opacity: 1;
+          transition: opacity .5s ease-in;
+        }
+
+        .example-leave.example-leave-active {
+          opacity: 0.01;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var ReactCSSTransitionGroup  = React.addons.CSSTransitionGroup;
+
+        var TodoList = React.createClass({
+            getInitialState:function () {
+                return {
+                    items:['hello','world','click','me']
+                }
+            },
+            render: function() {
+               var items = this.state.items.map(function(item, i) {
+                 return (
+                   <div key={item} onClick={this.handleRemove.bind(this, i)}>
+                     <ReactCSSTransitionGroup transitionName="example">
+                       {item}
+                     </ReactCSSTransitionGroup>
+                   </div>
+                 );
+               }, this);
+               return (
+                 <div>
+                   <button onClick={this.handleAdd}>Add Item</button>
+                   {items}
+                 </div>
+               );
+            },
+            handleRemove:function (i) {
+                var newItems = this.state.items;
+                newItems.splice(i,1);
+                this.setState({
+                    items:newItems
+                })
+            },
+            handelAdd:function () {
+                var newItems = this.state.items.concat([prompt('Enter some text')]);
+                this.setState({
+                    items:newItems
+                });
+            }
+        });
+
+
+        var ImageCarousel = React.createClass({
+          propTypes: {
+            imageSrc: React.PropTypes.string.isRequired
+          },
+          render: function() {
+            return (
+              <div>
+                <ReactCSSTransitionGroup transitionName="carousel">
+                  <img src={this.props.imageSrc} key={this.props.imageSrc} />
+                </ReactCSSTransitionGroup>
+              </div>
+            );
+          }
+        });
+
+        ReactDOM.render(
+            <TodoList></TodoList>,
+            document.getElementById('root')
+        )
+    </script>
+</body> 
+</html>
