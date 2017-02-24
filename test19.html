@@ -40,12 +40,13 @@
         var clii = React.createClass({
             render:function(){
                 return (
-                        <li>
-                        {this.props.children}
-                        </li>
+                    <li>
+                    {this.props.children}
+                    </li>
                 )
             }
-        })
+        });
+
         var child111 = React.createElement(cli, {key:'F'},'First Text Content');
         var child222 = React.createElement(cli, {key:'S'},'Second Text Content');
         var child333 = React.createElement(cli, {key:'T'},'Third Text Content');
@@ -56,6 +57,22 @@
             root,
             document.getElementById('root')
         )
+
+
+
+    </script>
+    <script>
+        function foo () {
+            var number = 44;
+            setTimeout(()=>{
+                var number = 55;
+                console.log(this.number);
+            },1000)
+        }
+
+        var number = 22 ;
+        foo();
+        foo.call({number:88});
     </script>
 </body> 
 </html>
