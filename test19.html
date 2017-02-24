@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-with-addons.min.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/toastr/toastr.js"></script>
+    <link rel="stylesheet" href="bower_components/toastr/toastr.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <style>
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        var child1 = React.createElement('li', null, 'First Text Content');
+        var child2 = React.createElement('li', null, 'Second Text Content');
+        var child3 = React.createElement('li', null, 'Third Text Content');
+        var root = React.createElement('ul', { className: 'my-list aaa bbb' ,'data-href':'baidu.com'}, child1, child2, child3);
+
+        var cli = React.createClass({
+            render:function(){
+                return (
+                    <li>
+                    {this.props.text}
+                    </li>
+                )
+            }
+        })
+        var child11 = React.createElement(cli, {key:'F',text:'First Text Content'});
+        var child22 = React.createElement(cli, {key:'S',text:'Second Text Content'});
+        var child33 = React.createElement(cli, {key:'T',text:'Third Text Content'});
+        var root1 = React.createElement('ul', { className: 'my-list' }, [child1, child2, child3]);
+        
+
+        var clii = React.createClass({
+            render:function(){
+                return (
+                        <li>
+                        {this.props.children}
+                        </li>
+                )
+            }
+        })
+        var child111 = React.createElement(cli, {key:'F'},'First Text Content');
+        var child222 = React.createElement(cli, {key:'S'},'Second Text Content');
+        var child333 = React.createElement(cli, {key:'T'},'Third Text Content');
+        var root11 = React.createElement('ul', { className: 'my-list' }, [child1, child2, child3]);
+       
+
+        ReactDOM.render(
+            root,
+            document.getElementById('root')
+        )
+    </script>
+</body> 
+</html>
