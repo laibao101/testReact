@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="bower_components/react/react.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-dom.js"></script>
+    <script type="text/javascript" src="bower_components/react/react-with-addons.min.js"></script>
+    <script type="text/javascript" src="bower_components/babel/browser.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/toastr/toastr.js"></script>
+    <link rel="stylesheet" href="bower_components/toastr/toastr.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <style>
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        
+        var CommentBox = React.createClass({
+            mixin:[],
+            getInitialState:function () {
+              return {
+                data:this.props.data
+              }  
+            },
+            render:function () {
+                return (
+                    <div className="commnetBox">
+                        <h1>CommentBox</h1>
+                        <CommentList comments={this.state.data}></CommentList>
+                        <CommentForm handelSubmit={this.handelSubmit}></CommentForm>
+                    </div>
+                )
+            },
+            handelSubmit:function (comment) {
+                var presentComments = this.state.data;
+                var flag = true;
+                presentComments.forEach(function (ele) {
+                    if (ele.text == comment.text && ele.author == comment.author) {
+                        flag = false;
+                        return false;   
+                    }
+                })
+
+                if (!flag) {
+                    return false;
+                }
+                var comments = presentComments.concat(comment);
+
+                this.setState({
+                    data:comments
+                });
+                return flag;
+            }
+        });
+
+        var CommentList = React.createClass({
+            render:function () {
+                var comments = this.props.comments.map(function (comment,i) {
+                    return <Comment author={comment.author} text={comment.text} key={comment.id}></Comment>;
+                });
+
+                return (
+                    <div>{comments}</div>
+                );
+            }
+        });
+
+        var Comment = React.createClass({
+            render:function () {
+                return (
+                    <li>
+                        <p>author: {this.props.author}</p>
+                        <p>text: {this.props.text}</p>
+                    </li>
+                )
+            }
+        });
+
+        var CommentForm = React.createClass({
+            getInitialState:function () {
+              return {
+                author:'',
+                text:''
+              };  
+            },
+            handelChange:function (e) {
+                var comment = {};
+                comment[e.target.name] = e.target.value
+                this.setState(comment);
+            },
+            handelSubmits:function (e) {
+                e.preventDefault();
+                var text = this.state.text;
+                var author = this.state.author;
+                var date = new Date();
+                var id = date.getTime();
+                if (!author || !text) {
+                    return false;
+                }
+                var comment = {
+                    text:text,
+                    author:author,
+                    id:id
+                };
+                var a = this.props.handelSubmit(comment);
+                if (a) {
+                    this.setState({
+                        text:'',
+                        author:''
+                    });
+                }else{
+                    toastr.error('请重新输入')
+                }
+            },
+            render:function () {
+                return (
+                    <form className="form-horizontal" onSubmit={this.handelSubmits} >
+                        <h1>添加评论</h1>
+                        <div className="form-group">
+                            <label htmlFor="" className="control-label col-md-2">author</label>
+                            <div className="col-md-8">
+                                <input type="text" name="author" onChange={this.handelChange} value={this.state.author} className="form-control"/>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="" className="control-label col-md-2">text</label>
+                            <div className="col-md-8">
+                                <input type="text" name="text" onChange={this.handelChange} value={this.state.text} className="form-control"/>
+                            </div>
+                        </div>
+                        <button type="submit" className="btn btn-block btn-default">提交</button>
+                    </form>
+                )
+            }
+        })
+
+        var data = [
+            {
+                "id": 1388534400000,
+                "author": "Pete Hunt",
+                "text": "Hey there!"
+            },
+            {
+                "id": 1420070400000,
+                "author": "Paul O’Shannessy",
+                "text": "React is *great*!"
+            },
+            {
+                "id": 1464988635157,
+                "author": "ben",
+                "text": "*abc*"
+            },
+            {
+                "id": 1464988636500,
+                "author": "ben",
+                "text": "*abc*"
+            },
+            {
+                "id": 1464988717637,
+                "author": "evil",
+                "text": "<a href=\"javascript:alert(1)\">alert(1)</a>"
+            },
+            {
+                "id": 1487850832124,
+                "author": "dadsaf",
+                "text": "gagds"
+            }
+        ];
+
+        ReactDOM.render(
+            <CommentBox data={data}></CommentBox>,
+            document.getElementById('root')
+        )
+    </script>
+</body> 
+</html>
